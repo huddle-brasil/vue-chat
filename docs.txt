@@ -1,0 +1,20 @@
+CHAT
+
+- props : 
+    - Game (O nome do game, para mudar o estilo do chat)
+    - Mensagens (Array com objetos contendo id do candidato, nome do candidato, mensagem)
+    - Candidato Atual (Utilizado para verificar a posição da mensagem, se for do usuario atual ela fica à direita)
+
+- functions :
+    - sendMessage (Enviar um evento para o elemento pai, com a mensagem e o id do candidato atual)
+    - updateMessage ()
+
+- scroll :
+    - Quando o candidato atual envia uma mensagem, o chat é scrollado para baixo
+    - Quando um outro candidato envia uma mensagem, o chat não é scrollado, porém aparece alguma informação na tela, informando a nova mensagem
+
+- Front
+    - Adicionar um botãozinho informando que recebeu mais mensagem ( no caso da mensagem de outros candidatos )
+
+
+
