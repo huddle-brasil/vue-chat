@@ -1,5 +1,36 @@
 CHAT
 
+* Como o chat será criado ? 
+    - O sistema que importar o Chat, usará um end-point para criar as instancias de chat necessárias.
+    - Ao criar a instancia do Chat, o sistema salvará um id no back do Chat, para utilizar aquela instancia.
+    - O sistema deverá guardar esse id em algum lugar, para instanciar o Chat.
+    - Ao criar a instancia do Chat, o sistema salvará os id`s dos membros do grupo, para serem utilizados naquela instancia.
+    - Ao criar a instancia do Chat, o sistema salvará o seu nome, para customizar o Chat.
+* Como o Chat será instanciado ?
+    - O Chat será instalado no sistema por meio do `npm i vue-chat-huddle --save` e devidamente instalado nos arquivos do Vue. X 
+    - O sistema deverá ter view(s) para incluir a(s) instancia(s).
+    - O(s) id(s) do(s) Chat(s) que o sistema salvou, será utilizado para chamar essas instancias.
+    - O sistema passará os ids dos membros, para validar com os ids salvos. #################################
+    - O sistema passará o id do membro atual, para diferenciar as mensagens.
+* Como o Chat vai funcionar ? 
+    - A conexão entre back e front será por meio das funções realtime do Firestore.
+    - Quando o membro atual enviar uma mensagem, o Chat será scrollado para baixo.
+    - Quando um outro membro enviar uma mensagem, o Chat não será scrollado, porém aparecá alguma informação na tela, informando a nova mensagem.
+    - O Chat terá um "botãozinho" informando novas mensagens de outros membros, caso o scroll não esteja em baixo.
+    - Caso a aba esteja fechada, será enviado um push notification, informando uma nova mensagem.
+    - Mostrar apenas as 15 mensagens mais recentes, caso o usuário suba o scroll, buscar mais mensagens
+* Como o Chat será customizado
+    - O Chat poderá ser customizado a partir do nome do sistema 
+    - O Chat também poderá ser customizado a partir da alteração das regras de css das classes disponibilizadas para alteração
+    
+
+
+
+    
+
+
+
+
 - props : 
     - Game (O nome do game, para mudar o estilo do chat)
     - Mensagens (Array com objetos contendo id do candidato, nome do candidato, mensagem)

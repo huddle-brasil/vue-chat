@@ -1,82 +1,58 @@
 <template>
     <div class="chat-body">
-        <div class="chat-messages">
-            <div class="chat-message message-right animated slideInRight">
-                <span class="message">
-                    Olá pessoal, boa tarde!
-                    Vou ficar responsável pela questão "A", beleza?
-                </span>
-            </div>
-            <div class="chat-message animated slideInLeft">
-                <span class="name-message">Bruno Mendonça</span>
-                <span class="message">
-                    Boa tarde!
-                    Ta certo, eu posso ficar com a questão "B" então.
-                </span>
-            </div>
-            <div class="chat-message animated slideInLeft">
-                <span class="name-message">Renata Gomes</span>
-                <span class="message">
-                    Boa tarde pessoal! :)
-                    Eu e o Rodolfo podemos ficar com a questão "C"!
-                </span>
-            </div>
-            <div class="chat-message animated slideInLeft">
-                <span class="name-message">Rodolfo Almeida</span>
-                <span class="message">
-                    Ta certo, ficamos com a questão "C". :)
-                </span>
-            </div>
-            <div class="chat-message message-right animated slideInRight" v-for="(message, index) in messages" :key="index">
-                <span class="message">
-                    {{ message }}
-                </span>
-            </div>
-        </div>
-        <div class="chat-input">
-            <input  
-                    autocomplete="off"
-                    type="text" 
-                    name="input-message" 
-                    id="inputMessage" 
-                    class="input-message"
-                    placeholder="Digite aqui a sua mensagem"
-                    @submit.prevent="addMessage()"
-                    @keyup.enter="addMessage()"
-                    @click="scrollChat()"
-                    @touch="scrollChat()">
-            <button @click="addMessage()" @touch="addMessage()" class="send-message">Enviar</button>
-        </div>
+        <chat-messages :messages="messages"></chat-messages>
+        <send-messages @sendMessage="sendMessage()"></send-messages>
     </div>
 </template>
 <script>
+import firebase from './helpers/firebase.js'
+import ChatMessages from './components/ChatMessages.vue'
+import SendMessages from './components/SendMessages.vue'
 export default {
     data(){
         return{
             messages : []
         }
     },
-    mounted(){
-        let chatMessages = document.querySelector('.chat-messages');
-        chatMessages.scrollTo(0, chatMessages.scrollHeight)
+    components:{
+        ChatMessages,
+        SendMessages
+    },
+    props:{
+        projectConfigs : {
+            type : Object,
+            required : true
+        },
+        chatId : {
+            type : String,
+            required : true
+        },
+        collectionName : {
+            type : String,
+            required : true
+        }
+    },
+    async created(){
+        let ref = await this.connectFirestore()
+        ref.onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(change => {
+                if(change.type == 'added') {
+                    let doc = change.doc
+                    this.messages.push(doc)
+                }
+            })
+        })
     },
     methods: {
-        addMessage(){
-            let chatMessages = document.querySelector('.chat-messages');
-            let message = inputMessage.value
-            this.messages.push(message)
-            inputMessage.value = ''
-            inputMessage.focus()
-            this.scrollChat()
+        async connectFirestore(){
+            let db = await firebase.initializeFirebase(this.projectConfigs)
+            let ref = await db.collection(this.collectionName).doc(this.chatId)
+            return ref
         },
-        scrollChat(){
-            let chatMessages = document.querySelector('.chat-messages');
-            setTimeout(function(){ 
-                chatMessages.scrollTop = chatMessages.scrollHeight +  1000;
-            }, 200);
+        async sendMessage(message){
+            let ref = await this.connectFirestore()
         }
     }
-
 }
 </script>
 <style lang="scss" scoped>
