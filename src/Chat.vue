@@ -30,6 +30,10 @@ export default {
         collectionName : {
             type : String,
             required : true
+        },
+        currentUser : {
+            type : Object,
+            required : true
         }
     },
     async created(){
@@ -51,6 +55,9 @@ export default {
         },
         async sendMessage(message){
             let ref = await this.connectFirestore()
+            let idSendler = this.currentUser.uid
+            
+            console.log(ref.get('messages'))
         }
     }
 }

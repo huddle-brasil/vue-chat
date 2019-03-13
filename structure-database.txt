@@ -1,0 +1,32 @@
+CHAT structure
+
+
+chats : {
+    eYRYEQLFwlc4yQVQBJVM : {
+        members : [
+            { uid : 'KDJSHDJKAS', name : 'Vitor Vicente' },
+            { uid : 'KJSDHFK', name : 'Vand Gomes' },
+            { uid : 'DOIASUJ', name : 'Leo Kina' }
+        ],
+        systemName : 'decode-game',
+        messages : [
+            { idMessage : 'dkjsahdhajks', message "Iae pessoal, tudo bem?", idSendler : 'KDJSHDJKAS'},
+            { idMessage : 'dkjsahddsadhajks', message "Tudo bem e com você?", idSendler : 'KJSDHFK'},
+            { idMessage : 'dkjsdasahdhajks', message "Boa tarde, galerinha!", idSendler : 'DOIASUJ'}
+        ]
+    },
+    DHJ378M5rWCweiyNbPxg : {
+        members : [
+            { uid : 'DHJ378M5r', name : 'Fernando Bueno' },
+            { uid : 'KLJUHJK', name : 'Vand Gomes' },
+            { uid : 'IOIKJKHD', name : 'Gui Sales' }
+        ],
+        systemName : 'decode-game',
+        messages : [
+            { idMessage : 'dkjsahdhajks', message "Iae pessoal, tudo bem?", idSendler : 'DHJ378M5r'},
+            { idMessage : 'dkjsahddsadhajks', message "Tudo bem e com você?", idSendler : 'KLJUHJK'},
+            { idMessage : 'dkjsdasahdhajks', message "Boa tarde, galerinha!", idSendler : 'IOIKJKHD'}
+        ]
+    }
+}
+
