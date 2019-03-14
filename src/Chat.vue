@@ -1,17 +1,22 @@
 <template>
     <div class="chat-body">
-        <chat-messages :messages="messages"></chat-messages>
-        <send-messages @sendMessage="sendMessage()"></send-messages>
+        <chat-messages :messages="messages" :currentUser="currentUser" :group="group"></chat-messages>
+        <send-messages @sendMessage="sendMessage"></send-messages>
     </div>
 </template>
 <script>
-import firebase from './helpers/firebase.js'
+import firebaseHelper from './helpers/firebase.js'
+import Firebase from 'firebase'
 import ChatMessages from './components/ChatMessages.vue'
 import SendMessages from './components/SendMessages.vue'
+import moment from 'moment'
+moment.locale('pt-br');
+import Bus from './main.js'
 export default {
     data(){
         return{
-            messages : []
+            messages : [],
+            ref : ''
         }
     },
     components:{
@@ -34,35 +39,49 @@ export default {
         currentUser : {
             type : Object,
             required : true
+        },
+        group : {
+            type : Array,
+            required : true
         }
     },
     async created(){
         let ref = await this.connectFirestore()
-        ref.onSnapshot(snapshot => {
-            snapshot.docChanges().forEach(change => {
-                if(change.type == 'added') {
-                    let doc = change.doc
-                    this.messages.push(doc)
-                }
-            })
+        this.ref = ref
+        let self = this
+        this.ref.onSnapshot(snapshot => {
+            Bus.$emit('newMessage')
+            let messages = snapshot.data().messages
+            if(self.messages.length){
+                self.messages = messages
+            }else{
+                let lastMessages = messages[messages.length - 1]
+                self.messages.push(lastMessages)
+            }
         })
     },
     methods: {
         async connectFirestore(){
-            let db = await firebase.initializeFirebase(this.projectConfigs)
+            let db = await firebaseHelper.initializeFirebase(this.projectConfigs)
             let ref = await db.collection(this.collectionName).doc(this.chatId)
             return ref
         },
         async sendMessage(message){
-            let ref = await this.connectFirestore()
-            let idSendler = this.currentUser.uid
-            
-            console.log(ref.get('messages'))
+            let sendlerId = this.currentUser.uid
+            let sentOn = moment().format()
+            let newMessage = {
+                sendlerId,
+                sentOn,
+                message
+            }
+            this.ref.update({
+                messages: Firebase.firestore.FieldValue.arrayUnion(newMessage)
+            })
         }
     }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 
     .chat-body{
 
@@ -123,47 +142,73 @@ export default {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            position: relative;
+            
 
-            .chat-message{
+            .chat-container{
 
-                max-width: 75%;
-                width: auto;
-                margin: 0 0 10px 20px;
-                padding: 15px;
-                background-color: white;
-                border-radius: 5px;
-                
+                width: 100%;
+                margin: 10px;
+                margin-bottom: 1px;
 
-                .name-message{
+                &:first-child{
 
-                    color: rgb(255, 115, 0);
-                    font-weight: bold;
-                    text-transform: uppercase;
-                    font-size: 12px;
-                    letter-spacing: 1px;
-                    width: 100%;
-                    display: block;
+                    margin-top: 10px;        
                 }
 
-                .message{
+                &:last-child{
 
-                    font-size: 14px;
-                    margin-top: 3px;
-                    color: rgb(20, 20, 20);
+                    margin-bottom: 10px;
+                }
+
+                .chat-message{
+
+                    max-width: 75%;
+                    background-color: white;
+                    border-radius: 5px;
+                    display: flex;
+                    flex-direction: column;
+                    padding: 2% 8% 2% 3%;
+                    width: max-content;
+                    
+
+                    .name-message{
+
+                        color: rgb(255, 115, 0);
+                        font-weight: bold;
+                        text-transform: uppercase;
+                        font-size: 10px;
+                        letter-spacing: 1px;
+                        width: 100%;
+                        display: block;
+                    }
+
+                    .message{
+
+                        font-size: 14px;
+                        color: #272727;
+                        font-weight: 700;
+                        margin-top: 5px;
+                    }
+                }
+
+                .message-right{
+
+                    background-color: #545e63;
+                    margin-left: auto;
+                    margin-right: 10px;
+
+                    .message{
+
+                        color: white;
+                        word-wrap: break-word;
+                        margin: 3px 0;
+                    }
                 }
             }
 
-            .message-right{
-
-                align-self: flex-end;
-                margin: 5px 15px 10px 0;
-                background-color: #545e63;
-
-                .message{
-
-                    color: white;
-                    word-wrap: break-word;
-                }
+            .chat-container-right{
+                margin : 5px 10px 0 0;
             }
         }
 
@@ -201,6 +246,54 @@ export default {
                 font-size: 0.7em;
                 letter-spacing: 1px;
                 outline: none;
+            }
+        }
+
+        .new-message{
+            position: fixed;
+            bottom: 75px;
+            right: 15px;
+
+            .container-circle{
+                position: relative;
+
+                .circle-new-messages{
+
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    background-color: #5cf356;
+                    position: absolute;
+                    top: -11px;
+                    left: -11px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    .new-message-counter{
+                        color: black;
+                        font-size: 12px;
+                        font-weight: bold;
+                    }
+                }
+            }
+
+            .btn-new-message{
+                background-color: white;
+                border: none;
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                outline: none;
+                cursor: pointer;
+
+                .img-new-message{
+                    height: 15px;
+                    margin-top: 2px;
+                }
             }
         }
     }

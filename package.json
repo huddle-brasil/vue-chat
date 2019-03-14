@@ -1,11 +1,10 @@
 {
   "name": "vue-chat-huddle",
-  "version": "0.3.0",
+  "version": "0.4.1",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "publish": "git push && npm publish"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "firebase": "^5.8.6",

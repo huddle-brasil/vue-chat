@@ -8,7 +8,7 @@ chats : {
             { uid : 'KJSDHFK', name : 'Vand Gomes' },
             { uid : 'DOIASUJ', name : 'Leo Kina' }
         ],
-        systemName : 'decode-game',
+        system : 'decode-game',
         messages : [
             { idMessage : 'dkjsahdhajks', message "Iae pessoal, tudo bem?", idSendler : 'KDJSHDJKAS'},
             { idMessage : 'dkjsahddsadhajks', message "Tudo bem e com você?", idSendler : 'KJSDHFK'},
@@ -23,9 +23,9 @@ chats : {
         ],
         systemName : 'decode-game',
         messages : [
-            { idMessage : 'dkjsahdhajks', message "Iae pessoal, tudo bem?", idSendler : 'DHJ378M5r'},
-            { idMessage : 'dkjsahddsadhajks', message "Tudo bem e com você?", idSendler : 'KLJUHJK'},
-            { idMessage : 'dkjsdasahdhajks', message "Boa tarde, galerinha!", idSendler : 'IOIKJKHD'}
+            { message "Iae pessoal, tudo bem?", idSendler : 'DHJ378M5r', sentOn : '20/01/2019 20:00:00'},
+            { message "Tudo bem e com você?", idSendler : 'KLJUHJK', sentOn : '20/01/2019 20:00:00'},
+            { message "Boa tarde, galerinha!", idSendler : 'IOIKJKHD', sentOn : '20/01/2019 20:00:00'}
         ]
     }
 }

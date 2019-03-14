@@ -28,11 +28,11 @@ export default {
             let chatMessages = document.querySelector('.chat-messages');
             setTimeout(function(){ 
                 chatMessages.scrollTop = chatMessages.scrollHeight +  1000;
-            }, 200);
+            }, 10);
         }
     }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 
 </style>
