@@ -1,13 +1,23 @@
 {
   "name": "vue-chat-huddle",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "private": false,
+  "main" : "./dist/flock.common.js",
+  "files" : [
+    "dist/*",
+    "src/*",
+    "public/*",
+    "*.json",
+    "*.js"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "build-lib": "vue-cli-service build --target lib --name flock ./src/index.js"
   },
   "dependencies": {
     "firebase": "^5.8.6",
+    "moment": "^2.24.0",
     "vue": "^2.6.6"
   },
   "devDependencies": {
